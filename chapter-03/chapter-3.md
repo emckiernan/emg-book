@@ -1,6 +1,6 @@
 ## Overview
 
-The objective of this data analysis practical is to learn how to filter EMG recordings, process the data, and do some preliminary analysis. The recordings to be analyzed can be found in our GitHub repository (<https://github.com/emckiernan/electrophys/tree/master/EMG/EMGbasics/data>), or new recordings can be obtained by performing the experimental practical from this series in [Ch. 1: Muscle and electromyogram basics](oxa:EPpXta8zJdzN048lz8AR/hZTnTYzQR5EQmCKX51Wj "Ch. 1: Muscle and electromyogram basics "). The duration of this practical could vary depending on the programming experience of students and the goals of the class. This practical could be carried out in multiple sessions, especially if students are ask to first record EMGs and then analyze their own recordings. Or, since this is an analysis practical, it could be done asynchronously as an assigned homework.
+The objective of this data analysis practical is to learn how to filter EMG recordings, process the data, and do some preliminary analysis. The recordings to be analyzed can be found in our GitHub repository (<https://github.com/emckiernan/electrophys/tree/master/EMG/EMGbasics/data>), or new recordings can be obtained by performing the experimental practical from this series in [Ch. 1: Muscle physiology and EMG basics ](oxa:EPpXta8zJdzN048lz8AR/hZTnTYzQR5EQmCKX51Wj "Ch. 1: Muscle physiology and EMG  basics "). The duration of this practical could vary depending on the programming experience of students and the goals of the class. This practical could be carried out in multiple sessions, especially if students are asked to first record EMGs and then analyze their own recordings. Or, since this is an analysis practical, it could be done asynchronously as an assigned homework. While not necessary, we recommend students carry out the analysis practical in [Ch. 2: Graphing and visually exploring EMG data](oxa:EPpXta8zJdzN048lz8AR/ASFQasVwRldUZm0nb6RC "Ch. 2: Graphing and visually exploring EMG data") prior to this practical.
 
 ## Setting up the notebook
 
@@ -37,7 +37,7 @@ import wave
 
 ## Extracting and graphing the data
 
-EMG recordings were obtained using the Backyard Brains EMG Spiker Box, and are saved as audio files in .wav format. We will use the same basic function as used in the 'Graphing and exploring EMG data' practical to extract and graph our data, with some extra commands to save relevant values needed for subsequent calculations.
+EMG recordings were obtained using the Backyard Brains Muscle SpikerBox, and are saved as audio files in .wav format. We will use the same basic function as used in the [Ch. 2: Graphing and visually exploring EMG data](oxa:EPpXta8zJdzN048lz8AR/ASFQasVwRldUZm0nb6RC "Ch. 2: Graphing and visually exploring EMG data") practical to extract and graph our data, with some extra commands to save relevant values needed for subsequent calculations.
 
 
 ```python

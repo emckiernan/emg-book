@@ -1,5 +1,6 @@
 ## Overview
-Measurements of EMG and force were taken in a forearm exercise. The data is divided in two types of muscle activity: intermittent and fatigue. In this Python notebook, we will analyze the intermittent data. The fatigue program has already been explained in a previous notebook (Ch. 5). The recordings to be analyzed can be found in our GitHub repository (https://github.com/emckiernan/electrophys). Before carrying out this analysis practical, students should first do the 'Graphing and exploring EMG data' and 'Filtering and analyzing EMG data' practicals from this series.
+
+The objective of this data analysis practical is to learn how to analyze EMG and force measurements taken during forearm exercises. The data can be found in our GitHub repository (<https://github.com/emckiernan/emg-book/tree/main/chapter-08/data>), or new recordings can be obtained by performing the experimental practical from this series in [Ch. 7: Forearm EMG with dynamometry](oxa:EPpXta8zJdzN048lz8AR/ezirbKT2x8fYE4rCdOgB "Ch. 7: Forearm EMG with dynamometry"). The duration of this practical could vary depending on the programming experience of students and the goals of the class. This practical could be carried out in multiple sessions, especially if students are asked to first record EMGs with dynamometry and then analyze their own recordings. Or, since this is an analysis practical, it could be done asynchronously as an assigned homework. While not necessary, we recommend students carry out the analysis practicals in [Ch. 2](oxa:EPpXta8zJdzN048lz8AR/ASFQasVwRldUZm0nb6RC "Ch. 2: Graphing and visually exploring EMG data") ,[Ch. 3](oxa:EPpXta8zJdzN048lz8AR/N4aWmYttZWOcQi2i2rNZ "Ch. 3: Filtering, processing, and analyzing EMG data"), and [Ch. 5: Quantifying muscle fatigue from EMG data](oxa:EPpXta8zJdzN048lz8AR/vW8ZGtkrQs3vPifO99sp "Ch. 5: Quantifying muscle fatigue from EMG data") prior to this practical.
 
 ## Setting up the notebook
 
@@ -1497,7 +1498,7 @@ initialParameters = np.array([1.0, -500.0, -300.0])
 fittedParameters_l, pcov_l = curve_fit(logarithmic, interm_l_max, f_interm_l_max, initialParameters)
 ```
 
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_56516/1045232656.py:3: RuntimeWarning: invalid value encountered in log
+    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_57777/1045232656.py:3: RuntimeWarning: invalid value encountered in log
       return a*np.log(x + b)+c
 
 
@@ -1592,6 +1593,10 @@ print('R-squared:', Rsquared_r)
     Parameters: [  47.92615244   21.07684969 -332.47485898]
     RMSE: 10.640590096617057
     R-squared: 0.8976560657623052
+
+
+    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_57777/1045232656.py:3: RuntimeWarning: invalid value encountered in log
+      return a*np.log(x + b)+c
 
 
 

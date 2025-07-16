@@ -1,6 +1,6 @@
 ## Overview
 
-The objective of this data analysis practical is to learn how to visually explore and quantify muscle fatigue from EMG recordings. All of the recordings analyzed below can be found in our GitHub repository (<https://github.com/emckiernan/electrophys/tree/master/EMG/EMGfatigue/data>), or new recordings can be obtained by performing the experimental practical in [Ch. 4: Using EMG to measure muscle fatigue](oxa:EPpXta8zJdzN048lz8AR/oZzZ9YkLDYhuIWC3d5Sk "Ch. 4: Using EMG to measure muscle fatigue") . The duration of this practical could vary depending on the programming experience of students and the goals of the class. This practical could be carried out in multiple sessions, especially if students are ask to first record EMGs and then analyze their own recordings. Or, since this is an analysis practical, it could be done asynchronously as an assigned homework. Before carrying out this analysis practical, it is recommended that students first complete the analysis practicals in [Ch. 2: Graphing and visually exploring EMG data](oxa:EPpXta8zJdzN048lz8AR/ASFQasVwRldUZm0nb6RC "Ch. 2: Graphing and visually exploring EMG data") and [Ch. 3: Filtering, processing, and analyzing EMG data](oxa:EPpXta8zJdzN048lz8AR/N4aWmYttZWOcQi2i2rNZ "Ch. 3: Filtering, processing, and analyzing EMG data") .
+The objective of this data analysis practical is to learn how to visually explore and quantify muscle fatigue from EMG recordings. All of the recordings analyzed below can be found in our GitHub repository (<https://github.com/emckiernan/electrophys/tree/master/EMG/EMGfatigue/data>), or new recordings can be obtained by performing the experimental practical in [Ch. 4: Using EMG to measure muscle fatigue](oxa:EPpXta8zJdzN048lz8AR/oZzZ9YkLDYhuIWC3d5Sk "Ch. 4: Using EMG to measure muscle fatigue") . The duration of this practical could vary depending on the programming experience of students and the goals of the class. This practical could be carried out in multiple sessions, especially if students are asked to first record EMGs and then analyze their own recordings. Or, since this is an analysis practical, it could be done asynchronously as an assigned homework. Before carrying out this analysis practical, it is recommended that students first complete the analysis practicals in [Ch. 2: Graphing and visually exploring EMG data](oxa:EPpXta8zJdzN048lz8AR/ASFQasVwRldUZm0nb6RC "Ch. 2: Graphing and visually exploring EMG data") and [Ch. 3: Filtering, processing, and analyzing EMG data](oxa:EPpXta8zJdzN048lz8AR/N4aWmYttZWOcQi2i2rNZ "Ch. 3: Filtering, processing, and analyzing EMG data") .
 
 ## Setting up the notebook
 
@@ -38,7 +38,7 @@ from scipy.signal import butter, lfilter, filtfilt
 import wave
 ```
 
-To analyze recordings, we first define a function that will allow us to quickly run the basic data extraction, visualization, and signal processing. This is the same function we defined in the 'Filtering and analyzing EMG data' practical.
+To analyze recordings, we first define a function that will allow us to quickly run the basic data extraction, visualization, and signal processing. This is the same function we defined in the [Ch. 3: Filtering, processing, and analyzing EMG data](oxa:EPpXta8zJdzN048lz8AR/N4aWmYttZWOcQi2i2rNZ "Ch. 3: Filtering, processing, and analyzing EMG data") practical.
 
 
 ```python
@@ -118,7 +118,8 @@ def processEMG(file,graph):
 As muscles contract, they also fatigue, especially if a significant effort is exerted, or if the contraction is prolonged. There are several ways we can visualize and quantify fatigue. 
 
 ### Changes in EMG signal amplitude with fatigue
-The following recording was obtained from the bicep muscle while performing a sustained concentric contraction, i.e. holding a weight with the arm bent at 90 degrees for 50 seconds (contraction starts around t=5s and ends at t=55s). 
+
+The following recording was obtained from the biceps muscle while performing a sustained concentric contraction, i.e. holding a weight with the arm bent at 90 degrees for 50 seconds (contraction starts around t=5s and ends at t=55s).
 
 
 ```python
@@ -769,4 +770,4 @@ plt.tight_layout()
     
 
 
-From the above figures, we can see that the first spectogram reaches higher values associated with the power content per frequency (orange area). This can be observed along the whole frequency band (0-400 Hz). The second spectogram shows a generalized decrease in the power content contributed by frequency. It is possibble to quickly compare these graphs by noticing the difference in the overall colors of the spectogram, with the first spectogram showing tones closer to red (higher power values), while the second one displays an overall yellow color (lower power values)  
+From the above figures, we can see that the first spectrogram reaches higher values associated with the power content per frequency (orange area). This can be observed along the whole frequency band (0-400 Hz). The second spectrogram shows a generalized decrease in the power content contributed by frequency. It is possible to quickly compare these graphs by noticing the difference in the overall colors of the spectrogram, with the first one showing tones closer to red (higher power values), while the second one displays an overall yellow color (lower power values).

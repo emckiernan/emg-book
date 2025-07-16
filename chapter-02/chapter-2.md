@@ -1,6 +1,6 @@
 ## Overview
 
-The objective of this data analysis practical is to graph and explore EMG recordings made from different skeletal muscles during various physical activities. The recordings visualized below can be found in our GitHub repository (<https://github.com/emckiernan/electrophys/tree/master/EMG/EMGbasics/data>), or new recordings can be obtained by performing the experimental practical in [Ch. 1: Muscle physiology and EMG basics](oxa:EPpXta8zJdzN048lz8AR/hZTnTYzQR5EQmCKX51Wj "Ch. 1: Muscle physiology and EMG  basics "). The duration of this practical could vary depending on the programming experience of students and the goals of the class. This practical could be carried out in multiple sessions, especially if students are ask to first record EMGs and then graph their own recordings. Or, since this is an analysis practical, it could be done asynchronously as an assigned homework.
+The objective of this data analysis practical is to graph and explore EMG recordings made from different skeletal muscles during various physical activities. The recordings visualized below can be found in our GitHub repository (<https://github.com/emckiernan/electrophys/tree/master/EMG/EMGbasics/data>), or new recordings can be obtained by performing the experimental practical in [Ch. 1: Muscle physiology and EMG basics](oxa:EPpXta8zJdzN048lz8AR/hZTnTYzQR5EQmCKX51Wj "Ch. 1: Muscle physiology and EMG  basics "). The duration of this practical could vary depending on the programming experience of students and the goals of the class. This practical could be carried out in multiple sessions, especially if students are asked to first record EMGs and then graph their own recordings. Or, since this is an analysis practical, it could be done asynchronously as an assigned homework.
 
 ## Setting up the notebook
 
@@ -33,7 +33,7 @@ import wave
 
 ## Extracting and graphing the data
 
-EMG recordings were obtained using the Backyard Brains EMG Spiker Box, and are saved as audio files in .wav format. So, we first have to open the .wav files and extract the data. We can also extract the number of recording channels and sampling rate.
+EMG recordings were obtained using the Backyard Brains Muscle SpikerBox, and are saved as audio files in .wav format. So, we first have to open the .wav files and extract the data. We can also extract the number of recording channels and sampling rate.
 
 
 ```python
@@ -109,12 +109,13 @@ def EMG(file):
     return
 ```
 
-## Exploring the activity of different muscles 
+## Exploring the activity of different muscles
 
-Using our function, we can now dive into our repository of recordings and look at the EMGs of different muscles recorded during various physical activities. 
+Using our function, we can now dive into our repository of recordings and look at the EMGs of different muscles recorded during various physical activities.
 
-### Bicep muscle
-The following EMG was recorded from the bicep muscle during repeated (3) contractions with intermittent rest periods. 
+### Biceps muscle
+
+The following EMG was recorded from the biceps muscle during repeated (3) contractions with intermittent rest periods.
 
 
 ```python
@@ -131,7 +132,7 @@ EMG(file='../data/S10_EMG_bicep_intermittent.wav')
     
 
 
-The following EMG was recorded from the bicep as the subject sustained a contraction and gradually increased the amount of force (i.e., recruitment).
+The following EMG was recorded from the biceps as the subject sustained a contraction and gradually increased the amount of force (i.e., recruitment).
 
 
 ```python
@@ -150,14 +151,14 @@ EMG(file='../data/S10_EMG_bicep_recruitment.wav')
 
 ### Study questions and exercises:
 
-* How do the recordings differ when we look at intermittent versus sustained muscle contractions?
-* Which features of the EMG recording change as the subject increases the force of contraction, and how? In other words, how might we quantify motor unit recruitment?
-* What other exercises could you carry out while recording from the bicep muscle, and how would you expect the EMG recordings to look?
-* If you have recording equipment available, record from your own bicep muscle and then extract and graph your data.
+- How do the recordings differ when we look at intermittent versus sustained muscle contractions?
+- Which features of the EMG recording change as the subject increases the force of contraction, and how? In other words, how might we quantify motor unit recruitment?
+- What other exercises could you carry out while recording from the biceps muscle, and how would you expect the EMG recordings to look?
+- If you have recording equipment available, record from your own biceps muscle and then extract and graph your data.
 
-### Tricep muscle
+### Triceps muscle
 
-The following recording was made from the tricep muscle while the subject performed tricep dips.
+The following recording was made from the triceps muscle while the subject performed triceps dips.
 
 
 ```python
@@ -174,7 +175,7 @@ EMG(file='../data/S1_EMG_tricep_dips.wav')
     
 
 
-This next recording is more complex. It was made from the tricep muscle and included the following sequence of activities: (1) for the first 10 seconds, the subject was at rest, (2) then for the following 10 seconds, the subject turned their arm to activate the tricep isometrically, (3) then the subject changed position, and (4) finally, during the last 20 seconds, the subject repeatedly lifted and lowered a bottle with water inside (i.e., similar to an overhead tricep extension).
+This next recording is more complex. It was made from the triceps muscle and included the following sequence of activities: (1) for the first 10 seconds, the subject was at rest, (2) then for the following 10 seconds, the subject turned their arm to activate the triceps isometrically, (3) then the subject changed position, and (4) finally, during the last 20 seconds, the subject repeatedly lifted and lowered a bottle with water inside (i.e., similar to an overhead triceps extension).
 
 
 ```python
@@ -193,10 +194,10 @@ EMG(file='../data/S1_EMG_tricep_twistWeight.wav')
 
 ### Study questions and exercises:
 
-* Why do you think the tricep dip recording shows a high level of continuous activity despite the fact that the dips involve an up-and-down movement?
-* How is the tricep dip activity different from the repeated tricep extension at the end of the second recording, and why?
-* What other exercises could you carry out while recording from the tricep muscle, and how would you expect the EMG recordings to look?
-* If you have recording equipment available, record from your own tricep muscle and then extract and graph your data.
+- Why do you think the triceps dip recording shows a high level of continuous activity despite the fact that the dips involve an up-and-down movement?
+- How is the triceps dip activity different from the repeated triceps extension at the end of the second recording, and why?
+- What other exercises could you carry out while recording from the triceps muscle, and how would you expect the EMG recordings to look?
+- If you have recording equipment available, record from your own triceps muscle and then extract and graph your data.
 
 ### Forearm muscles
 
@@ -262,10 +263,10 @@ EMG(file='../data/S3_EMG_jawMuscle_chewSmile.wav')
 
 ### Study questions and exercises:
 
-* Which muscles control chewing and smiling, and which could be contributing to the EMG signal?
-* What differences do you see in the EMGs recorded when the subject is chewing versus smiling, and what do you think causes these differences?
-* What other activites could you carry out while recording from the jaw or other facial muscles, and how would you expect the EMG recordings to look?
-* If you have recording equipment available, record from your own jaw muscles, try experimenting with different electrode placements on the face, and then extract and graph your data.
+- Which muscles control chewing and smiling, and which could be contributing to the EMG signal?
+- What differences do you see in the EMGs recorded when the subject is chewing versus smiling, and what do you think causes these differences?
+- What other activities could you carry out while recording from the jaw or other facial muscles, and how would you expect the EMG recordings to look?
+- If you have recording equipment available, record from your own jaw muscles; try experimenting with different electrode placements on the face, and then extract and graph your data
 
 ### Abdominal muscles
 
@@ -310,9 +311,9 @@ EMG(file='../data/S5_EMG_abs_plank.wav')
 * What other exercises could you do to activate the abdominal muscles, or which other ab muscles could you record from, and how would you expect the EMG recordings to look?
 * If you have recording equipment available, record from your own abdominal muscles, try experimenting with different electrode placements and exercises, and then extract and graph your data.
 
-### Quadricep muscles
+### Quadriceps muscles
 
-The following EMG was recorded from the quadricep muscles while the subject performed a one-legged squat, also known as a Bulgarian squat. The subject also had a backpack filled with books on during the exercise for added weight.
+The following EMG was recorded from the quadriceps muscles while the subject performed a one-legged squat, also known as a Bulgarian squat. The subject also had a backpack filled with books on during the exercise for added weight.
 
 
 ```python
@@ -348,9 +349,9 @@ EMG(file='../data/S9_EMG_quadricep_squatSustained.wav')
 
 ### Study questions and exercises:
 
-* What muscles make up the quadricep group, and which could be contributing to the EMG signal?
-* What factors could explain the fluctuations seen in the two recordings? What might have caused the increased amplitude at the end of the wall squat recording?
-* What other exercises could you perform while recording from the quadricep muscles, and how would you expect the EMG recordings to look?
-* If you have recording equipment available, record from your own quadriceps, try experimenting with different electrode placements, and then extract and graph your data.
+- What muscles make up the quadriceps group, and which could be contributing to the EMG signal?
+- What factors could explain the fluctuations seen in the two recordings? What might have caused the increased amplitude at the end of the wall squat recording?
+- What other exercises could you perform while recording from the quadriceps muscles, and how would you expect the EMG recordings to look?
+- If you have recording equipment available, record from your own quadriceps, try experimenting with different electrode placements, and then extract and graph your data.
 
 You can explore more recordings from [our repository](https://github.com/emckiernan/electrophys/tree/master/EMG/EMGbasics/data). Or, record your own EMGs and experiment with electrode placement and different exercises to see how it affects the signal.
