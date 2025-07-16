@@ -119,7 +119,7 @@ plt.show;
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("ECG: Intermitent")
+plt.title("EMG: Intermittent")
 plt.plot(np.linspace(0,len(interm_l)/sr_interm_l,num=len(interm_l)),interm_l,label="Intermittent L")
 plt.plot(np.linspace(0,len(interm_r)/sr_interm_r,num=len(interm_r)),interm_r,label="Intermittent R")
 plt.legend()
@@ -160,7 +160,7 @@ plt.show;
 #The EMG data is larger than the force data. 
 # First we need to adjust both arrays.
 # The offset is calculated 
-offset_i_l=abs(f_time[len(f_intermitent_l)-1]-len(intermitent_l)/sr_intermitent_l)
+offset_i_l=abs(f_time[len(f_interm_l)-1]-len(interm_l)/sr_interm_l)
 ```
 
 
@@ -193,7 +193,7 @@ plt.show;
 
 ```python
 # The offset is calculated 
-offset_i_r=abs(f_time[len(f_intermitent_r)-1]-len(intermitent_r)/sr_intermitent_r)
+offset_i_r=abs(f_time[len(f_interm_r)-1]-len(interm_r)/sr_interm_r)
 ```
 
 
@@ -880,7 +880,7 @@ plt.ylabel('Frequency (Hz)')
 plt.title('Spectrogram - Rectified EMG')
 
 ax2 = plt.subplot(212)
-plt.plot(np.arange(0,len(intermitent_r))/sr_intermitent_r,intermitent_r,lw=.1)
+plt.plot(np.arange(0,len(interm_r))/sr_interm_r,interm_r,lw=.1)
 plt.ylabel('Voltage (uncalibrated)')
 plt.xlabel('Time (sec)')
 plt.xlim(t_r[0],t_r[-1])
@@ -1414,7 +1414,7 @@ for i in range(0,len(time_l_env)):
 
 
 ```python
-# For every segment of the EMG envelope, we append the maximum value to the array intermitent_r_max
+# For every segment of the EMG envelope, we append the maximum value to the array interm_r_max
 j=0
 start=False
 interm_r_max=[]

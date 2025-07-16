@@ -7773,7 +7773,7 @@ Note: you may need to restart the kernel to use updated packages.
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"ECG: Intermitent"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"EMG: Intermittent"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">interm_l</span><span class="p">)</span><span class="o">/</span><span class="n">sr_interm_l</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">interm_l</span><span class="p">)),</span><span class="n">interm_l</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">"Intermittent L"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">interm_r</span><span class="p">)</span><span class="o">/</span><span class="n">sr_interm_r</span><span class="p">,</span><span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">interm_r</span><span class="p">)),</span><span class="n">interm_r</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">"Intermittent R"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -7853,7 +7853,7 @@ Note: you may need to restart the kernel to use updated packages.
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1">#The EMG data is larger than the force data. </span>
 <span class="c1"># First we need to adjust both arrays.</span>
 <span class="c1"># The offset is calculated </span>
-<span class="n">offset_i_l</span><span class="o">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">f_time</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">f_intermitent_l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">intermitent_l</span><span class="p">)</span><span class="o">/</span><span class="n">sr_intermitent_l</span><span class="p">)</span>
+<span class="n">offset_i_l</span><span class="o">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">f_time</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">f_interm_l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">interm_l</span><span class="p">)</span><span class="o">/</span><span class="n">sr_interm_l</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7919,7 +7919,7 @@ Note: you may need to restart the kernel to use updated packages.
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># The offset is calculated </span>
-<span class="n">offset_i_r</span><span class="o">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">f_time</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">f_intermitent_r</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">intermitent_r</span><span class="p">)</span><span class="o">/</span><span class="n">sr_intermitent_r</span><span class="p">)</span>
+<span class="n">offset_i_r</span><span class="o">=</span><span class="nb">abs</span><span class="p">(</span><span class="n">f_time</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">f_interm_r</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">interm_r</span><span class="p">)</span><span class="o">/</span><span class="n">sr_interm_r</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9299,7 +9299,7 @@ Note: you may need to restart the kernel to use updated packages.
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Spectrogram - Rectified EMG'</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">intermitent_r</span><span class="p">))</span><span class="o">/</span><span class="n">sr_intermitent_r</span><span class="p">,</span><span class="n">intermitent_r</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mf">.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">interm_r</span><span class="p">))</span><span class="o">/</span><span class="n">sr_interm_r</span><span class="p">,</span><span class="n">interm_r</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mf">.1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Voltage (uncalibrated)'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time (sec)'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">t_r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">t_r</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -10348,7 +10348,7 @@ Note: you may need to restart the kernel to use updated packages.
 <div class="jp-InputPrompt jp-InputArea-prompt">In [170]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># For every segment of the EMG envelope, we append the maximum value to the array intermitent_r_max</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># For every segment of the EMG envelope, we append the maximum value to the array interm_r_max</span>
 <span class="n">j</span><span class="o">=</span><span class="mi">0</span>
 <span class="n">start</span><span class="o">=</span><span class="kc">False</span>
 <span class="n">interm_r_max</span><span class="o">=</span><span class="p">[]</span>
