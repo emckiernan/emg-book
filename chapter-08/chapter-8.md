@@ -1,9 +1,23 @@
 ## Overview
-Measurments of EMG and force were taken in a forearm exercise. The data is divided in two types of muscle activity: intermitent and fatigue. In this python notebook we will analyze the intermitent data. The fatigue program has already been explained in the previous notebook. The recordings to be analyzed can be found in our GitHub repository (https://github.com/emckiernan/electrophys). Before carrying out this analysis practical, students should first do the 'Graphing and exploring EMG data' and 'Filtering and analyzing EMG data' practicals from this series.
+Measurements of EMG and force were taken in a forearm exercise. The data is divided in two types of muscle activity: intermittent and fatigue. In this Python notebook, we will analyze the intermittent data. The fatigue program has already been explained in a previous notebook (Ch. 5). The recordings to be analyzed can be found in our GitHub repository (https://github.com/emckiernan/electrophys). Before carrying out this analysis practical, students should first do the 'Graphing and exploring EMG data' and 'Filtering and analyzing EMG data' practicals from this series.
 
 ## Setting up the notebook
 
 We begin by setting up the Jupyter notebook and importing the Python modules for plotting figures, reading the data and analyzing it.
+
+
+```python
+%pip install pandas;
+```
+
+    Requirement already satisfied: pandas in /opt/homebrew/Cellar/jupyterlab/4.4.4/libexec/lib/python3.13/site-packages (2.3.1)
+    Requirement already satisfied: numpy>=1.26.0 in /opt/homebrew/lib/python3.13/site-packages (from pandas) (2.2.5)
+    Requirement already satisfied: python-dateutil>=2.8.2 in /opt/homebrew/Cellar/jupyterlab/4.4.4/libexec/lib/python3.13/site-packages (from pandas) (2.9.0.post0)
+    Requirement already satisfied: pytz>=2020.1 in /opt/homebrew/Cellar/jupyterlab/4.4.4/libexec/lib/python3.13/site-packages (from pandas) (2025.2)
+    Requirement already satisfied: tzdata>=2022.7 in /opt/homebrew/Cellar/jupyterlab/4.4.4/libexec/lib/python3.13/site-packages (from pandas) (2025.2)
+    Requirement already satisfied: six>=1.5 in /opt/homebrew/Cellar/jupyterlab/4.4.4/libexec/lib/python3.13/site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+    Note: you may need to restart the kernel to use updated packages.
+
 
 
 ```python
@@ -19,24 +33,35 @@ import wave
 import pandas as pd
 ```
 
-## 1.- Importing data
+
+```python
+# command to view figures in Jupyter notebook
+%matplotlib inline 
+
+# commands to create high-resolution figures with large labels
+%config InlineBackend.figure_formats = {'png', 'retina'} 
+plt.rcParams['axes.labelsize'] = 14 # fontsize for figure labels
+plt.rcParams['font.size'] = 14 # fontsize for figure numbers
+```
+
+## Importing data
 
 
 ```python
-sr_fatigue_l, fatigue_l = scipy.io.wavfile.read("./S1_EMG_leftHand_gripFatigue.wav", "r")
-sr_fatigue_r, fatigue_r = scipy.io.wavfile.read("./S1_EMG_rightHand_gripFatigue.wav", "r")
+sr_fatigue_l, fatigue_l = scipy.io.wavfile.read("./data/S1_EMG_leftHand_gripFatigue.wav", "r")
+sr_fatigue_r, fatigue_r = scipy.io.wavfile.read("./data/S1_EMG_rightHand_gripFatigue.wav", "r")
 ```
 
 
 ```python
-sr_intermitent_l,intermitent_l = scipy.io.wavfile.read("./S1_EMG_leftHand_gripIntermittent.wav", "r")
-sr_intermitent_r,intermitent_r = scipy.io.wavfile.read("./S1_EMG_rightHand_gripIntermittent.wav", "r")
+sr_interm_l,interm_l = scipy.io.wavfile.read("./data/S1_EMG_leftHand_gripIntermittent.wav", "r")
+sr_interm_r,interm_r = scipy.io.wavfile.read("./data/S1_EMG_rightHand_gripIntermittent.wav", "r")
 ```
 
 
 ```python
 # Read the csv file of the force recordings
-force=pd.read_csv("EMG_Force.csv")
+force=pd.read_csv("./data/EMG_Force.csv")
 ```
 
 
@@ -46,13 +71,13 @@ f_fatigue_l= force["Left_hand_fatigue"].to_numpy()
 f_fatigue_l= f_fatigue_l[~np.isnan(f_fatigue_l)]
 f_fatigue_r=force["Right_hand_fatigue"].to_numpy()
 f_fatigue_r= f_fatigue_r[~np.isnan(f_fatigue_r)]
-f_intermitent_l=force["Left_hand_intermittent"].to_numpy()
-f_intermitent_l=f_intermitent_l[~np.isnan(f_intermitent_l)]
-f_intermitent_r=force["Right_hand_intermittent"].to_numpy()
-f_intermitent_r=f_intermitent_r[~np.isnan(f_intermitent_r)]
+f_interm_l=force["Left_hand_intermittent"].to_numpy()
+f_interm_l=f_interm_l[~np.isnan(f_interm_l)]
+f_interm_r=force["Right_hand_intermittent"].to_numpy()
+f_interm_r=f_interm_r[~np.isnan(f_interm_r)]
 ```
 
-## 2.- Plotting the data
+## Plotting the data
 
 
 ```python
@@ -62,20 +87,14 @@ plt.title("Force: Fatigue")
 plt.plot(np.linspace(0,len(fatigue_r)/sr_fatigue_r,num=len(fatigue_r)),fatigue_r,label="Fatigue R")
 plt.plot(np.linspace(0,len(fatigue_l)/sr_fatigue_l,num=len(fatigue_l)),fatigue_l,label="Fatigue L")
 plt.legend()
-plt.xlabel('Time [s]')
-plt.ylabel('Voltage [$\mu V$]')
+plt.xlabel('Time (s)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show;
 ```
 
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/305817537.py:8: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage [$\mu V$]')
-
-
 
     
-![png](chapter-8_files/chapter-8_9_1.png)
+![png](chapter-8_files/chapter-8_11_0.png)
     
 
 
@@ -86,51 +105,8 @@ plt.title("Force: Fatigue")
 plt.plot(f_time[0:len(f_fatigue_r)],f_fatigue_r,label="Fatigue R")
 plt.plot(f_time[0:len(f_fatigue_l)],f_fatigue_l,label="Fatigue L")
 plt.legend()
-plt.xlabel('Time [s]')
-plt.ylabel('Force [unkown units]')
-plt.show;
-```
-
-
-    
-![png](chapter-8_files/chapter-8_10_0.png)
-    
-
-
-
-```python
-plt.figure(figsize=(18,6))
-plt.title("ECG: Intermitent")
-plt.plot(np.linspace(0,len(intermitent_l)/sr_intermitent_l,num=len(intermitent_l)),intermitent_l,label="Intermitent L")
-plt.plot(np.linspace(0,len(intermitent_r)/sr_intermitent_r,num=len(intermitent_r)),intermitent_r,label="Intermitent R")
-plt.legend()
-plt.xlabel('Time [s]')
-plt.ylabel('Voltage [$\mu V$]')
-plt.show;
-```
-
-    <>:7: SyntaxWarning: invalid escape sequence '\m'
-    <>:7: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/2262863647.py:7: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage [$\mu V$]')
-
-
-
-    
-![png](chapter-8_files/chapter-8_11_1.png)
-    
-
-
-
-```python
-plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent")
-plt.plot(f_time[0:len(f_intermitent_r)],f_intermitent_l,label="Intermitent L")
-plt.plot(f_time[0:len(f_intermitent_l)],f_intermitent_r,label="Intermitent R")
-plt.legend()
-
-plt.xlabel('Time [s]')
-plt.ylabel('Force [unkown units]')
+plt.xlabel('Time (s)')
+plt.ylabel('Force')
 plt.show;
 ```
 
@@ -140,9 +116,44 @@ plt.show;
     
 
 
-Since we don't have the information of the sensor and how it has been calibrated, we can't be certain of the units used in the force measurements.
 
-## 3.- Graphing the intermetent measurments
+```python
+plt.figure(figsize=(18,6))
+plt.title("ECG: Intermitent")
+plt.plot(np.linspace(0,len(interm_l)/sr_interm_l,num=len(interm_l)),interm_l,label="Intermittent L")
+plt.plot(np.linspace(0,len(interm_r)/sr_interm_r,num=len(interm_r)),interm_r,label="Intermittent R")
+plt.legend()
+plt.xlabel('Time (s)')
+plt.ylabel('Voltage (uncalibrated)')
+plt.show;
+```
+
+
+    
+![png](chapter-8_files/chapter-8_13_0.png)
+    
+
+
+
+```python
+plt.figure(figsize=(18,6))
+plt.title("Force: Intermittent")
+plt.plot(f_time[0:len(f_interm_r)],f_interm_l,label="Intermittent L")
+plt.plot(f_time[0:len(f_interm_l)],f_interm_r,label="Intermittent R")
+plt.legend()
+
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
+plt.show;
+```
+
+
+    
+![png](chapter-8_files/chapter-8_14_0.png)
+    
+
+
+## Graphing the intermittent measurements
 
 
 ```python
@@ -161,19 +172,21 @@ a_i_l=1.58
 
 
 ```python
-# Plot the left hand intermitent data
+# Plot the left hand intermittent data
 plt.figure(figsize=(18,6))
-plt.title("Intermitent: Left")
-plt.plot(np.linspace(-a_i_l,offset_i_l-a_i_l+f_time[len(f_intermitent_l-1)],num=len(intermitent_l)),intermitent_l,label="EMG")
-plt.plot(f_time[0:len(f_intermitent_l)],max(intermitent_l)*f_intermitent_l/max(f_intermitent_l),label="Force")
+plt.title("Intermittent: Left")
+plt.plot(np.linspace(-a_i_l,offset_i_l-a_i_l+f_time[len(f_interm_l-1)],num=len(interm_l)),interm_l,label="EMG")
+plt.plot(f_time[0:len(f_interm_l)],max(interm_l)*f_interm_l/max(f_interm_l),label="Force")
 #plt.xlim(0,10)
+plt.xlabel('Time (s)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.legend()
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_17_0.png)
+![png](chapter-8_files/chapter-8_18_0.png)
     
 
 
@@ -192,23 +205,25 @@ a_i_r=1
 
 
 ```python
-# Plot the left hand intermitent data
+# Plot the left hand intermittent data
 plt.figure(figsize=(18,6))
-plt.title("Intermitent: Right")
-plt.plot(np.linspace(-0.9,offset_i_r-a_i_r+f_time[len(f_intermitent_r-1)],num=len(intermitent_r)),intermitent_r,label="EMG")
-plt.plot(f_time[0:len(f_intermitent_r)],max(intermitent_r)*f_intermitent_r/max(f_intermitent_r),label="Force")
+plt.title("Intermittent: Right")
+plt.plot(np.linspace(-0.9,offset_i_r-a_i_r+f_time[len(f_interm_r-1)],num=len(interm_r)),interm_r,label="EMG")
+plt.plot(f_time[0:len(f_interm_r)],max(interm_r)*f_interm_r/max(f_interm_r),label="Force")
 #plt.xlim(0,10)
+plt.xlabel('Time (s)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.legend()
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_20_0.png)
+![png](chapter-8_files/chapter-8_21_0.png)
     
 
 
-## 4.- Graphing the fatigue measurments
+## Graphing the fatigue measurments
 
 
 
@@ -233,12 +248,14 @@ plt.plot(np.linspace(-a_f_l,offset_f_l-a_f_l+f_time[len(f_fatigue_l)-1],num=len(
 plt.plot(f_time[0:len(f_fatigue_l)],max(fatigue_l)*f_fatigue_l/max(f_fatigue_l),label="Force")
 plt.legend()
 #plt.xlim(0,10)
+plt.xlabel('Time (s)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_24_0.png)
+![png](chapter-8_files/chapter-8_25_0.png)
     
 
 
@@ -257,11 +274,13 @@ a_f_r=6.3
 
 
 ```python
-# Plot the left hand intermitent data
+# Plot the right hand fatigue data
 plt.figure(figsize=(18,6))
 plt.title("Fatigue: Right")
 plt.plot(np.linspace(-a_f_r,offset_f_r-a_f_r+f_time[len(f_fatigue_r)-1],num=len(fatigue_r)),fatigue_r,label="EMG")
 plt.plot(f_time[0:len(f_fatigue_r)],6*f_fatigue_r,label="Force")
+plt.xlabel('Time (s)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.legend()
 #plt.xlim(0,10)
 plt.show;
@@ -269,11 +288,11 @@ plt.show;
 
 
     
-![png](chapter-8_files/chapter-8_27_0.png)
+![png](chapter-8_files/chapter-8_28_0.png)
     
 
 
-## 5.- Filtering the siganls
+## Filtering the signals
 
 
 ```python
@@ -312,12 +331,12 @@ def filtering(x,sr):
 
 
 ```python
-intermitent_l=filtering(intermitent_l,sr_intermitent_l)
+interm_l=filtering(interm_l,sr_interm_l)
 ```
 
 
 ```python
-intermitent_r=filtering(intermitent_r,sr_intermitent_r)
+interm_r=filtering(interm_r,sr_interm_r)
 ```
 
 
@@ -330,11 +349,11 @@ fatigue_l=filtering(fatigue_l,sr_fatigue_l)
 fatigue_r=filtering(fatigue_r,sr_fatigue_r)
 ```
 
-# 6.-Finding the activation limits in the intermitent signal
+## Finding the activation limits in the intermittent signal
 
-## 6.1: First derivative function
+### First derivative function
 
-One way to find the beginning and ending of the action potential is by analyzing concavities. To do this we must first find the first derivative of the function
+One way to find the beginning and ending of the signal is by analyzing concavities. To do this we must first find the first derivative of the function.
 
 
 ```python
@@ -349,17 +368,17 @@ def der1(array):
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent")
-plt.plot(f_time[0:len(f_intermitent_l)],f_intermitent_l,label="Intermitent L")
+plt.title("Force: Intermittent")
+plt.plot(f_time[0:len(f_interm_l)],f_interm_l,label="Intermittent L")
 plt.legend()
-plt.xlabel('Time [s]')
-plt.ylabel('Force [unkown units]')
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_38_0.png)
+![png](chapter-8_files/chapter-8_39_0.png)
     
 
 
@@ -367,58 +386,57 @@ Now we compute the first derivative to the array graphed above.
 
 
 ```python
-f_intermitent_l_prime=der1(f_intermitent_l)
+f_interm_l_prime=der1(f_interm_l)
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent Left")
-plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l,label="Intermitent L")
-plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l_prime,label="Intermitent L'")
+plt.title("Force: Intermittent Left")
+plt.plot(f_time[:len(f_interm_l)],f_interm_l,label="Intermittent L")
+plt.plot(f_time[:len(f_interm_l)],f_interm_l_prime,label="Intermittent L'")
 plt.legend()
-plt.xlabel('Time [s]')
-plt.ylabel('Force [unkown units]')
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_41_0.png)
+![png](chapter-8_files/chapter-8_42_0.png)
     
 
 
-## 6.2: Second derivative function
+### Second derivative function
 
 Now we compute the second derivative
 
 
 ```python
-f_intermitent_l_2prime=der1(f_intermitent_l_prime)
+f_interm_l_2prime=der1(f_interm_l_prime)
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent Left")
-plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l,label="Intermitent L")
-#plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l_prime,label="Intermitent L'")
-plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l_2prime,label="Intermitent L''")
+plt.title("Force: Intermittent Left")
+plt.plot(f_time[:len(f_interm_l)],f_interm_l,label="Intermittent L")
+plt.plot(f_time[:len(f_interm_l)],f_interm_l_2prime,label="Intermittent L''")
 plt.legend()
-plt.xlabel('Time [s]')
-plt.ylabel('Force [unkown units]')
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_45_0.png)
+![png](chapter-8_files/chapter-8_46_0.png)
     
 
 
 Notice how we only care about the peaks, so we will compute them in the next section.
 
-## 6.3: Inflection points
+### Inflection points
 
 
 ```python
@@ -434,30 +452,29 @@ def local_max(x,y):
 
 
 ```python
-f_intermitent_l_ip=local_max(f_time[:len(f_intermitent_l)],f_intermitent_l_prime)
+f_interm_l_ip=local_max(f_time[:len(f_interm_l)],f_interm_l_prime)
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent Left")
-plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l,label="Intermitent L")
-plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l_prime,label="Intermitent L'")
-#plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l_2prime,label="Intermitent L''")
-plt.scatter(f_intermitent_l_ip[0],f_intermitent_l_ip[1],label="Inflection points")
+plt.title("Force: Intermittent Left")
+plt.plot(f_time[:len(f_interm_l)],f_interm_l,label="Intermittent L")
+plt.plot(f_time[:len(f_interm_l)],f_interm_l_prime,label="Intermittent L'")
+plt.scatter(f_interm_l_ip[0],f_interm_l_ip[1],label="Inflection points")
 plt.legend()
-plt.xlabel('Time [s]')
-plt.ylabel('Force [unkown units]')
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_50_0.png)
+![png](chapter-8_files/chapter-8_51_0.png)
     
 
 
-Notice that we have too many inflection points that occur due to noise, so qe will filter out all the points that are above zero. 
+Notice that we have too many inflection points that occur due to noise, so we will filter out all the points that are above zero. 
 
 
 ```python
@@ -474,31 +491,32 @@ def local_max(x,y):
 
 
 ```python
-f_intermitent_l_ip=local_max(f_time[:len(f_intermitent_l)],f_intermitent_l_prime)
+f_interm_l_ip=local_max(f_time[:len(f_interm_l)],f_interm_l_prime)
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent Left")
-plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l,label="Intermitent L")
-plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l_prime,label="Intermitent L'")
-#plt.plot(f_time[:len(f_intermitent_l)],f_intermitent_l_2prime,label="Intermitent L''")
-plt.scatter(f_intermitent_l_ip[0],f_intermitent_l_ip[1],label="Inflection points")
+plt.title("Force: Intermittent Left")
+plt.plot(f_time[:len(f_interm_l)],f_interm_l,label="Intermittent L")
+plt.plot(f_time[:len(f_interm_l)],f_interm_l_prime,label="Intermittent L'")
+plt.scatter(f_interm_l_ip[0],f_interm_l_ip[1],label="Inflection points")
 plt.xlim(0,20)
 plt.ylim(0,50)
 plt.grid()
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.legend()
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_54_0.png)
+![png](chapter-8_files/chapter-8_55_0.png)
     
 
 
-## 6.4: Limits with threshold:
+### Limits with threshold:
 
 
 ```python
@@ -515,27 +533,28 @@ def pa_beginning(x,y,threshold=5):
 
 
 ```python
-f_intermitent_l_pab=pa_beginning(f_time,f_intermitent_l_prime,threshold=4)
+f_interm_l_pab=pa_beginning(f_time,f_interm_l_prime,threshold=4)
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent Left")
-plt.plot(f_time[:601],f_intermitent_l,label="Intermitent L")
-plt.plot(f_time[:601],f_intermitent_l_prime,label="Intermitent L'")
-#plt.plot(f_intermitent_l[:,0],f_intermitent_l_2prime,label="Intermitent L''")
-plt.scatter(f_intermitent_l_pab[0],f_intermitent_l_pab[1],label="Inflection points")
+plt.title("Force: Intermittent Left")
+plt.plot(f_time[:601],f_interm_l,label="Intermittent L")
+plt.plot(f_time[:601],f_interm_l_prime,label="Intermittent L'")
+plt.scatter(f_interm_l_pab[0],f_interm_l_pab[1],label="Inflection points")
 plt.xlim(0,20)
 plt.ylim(0,50)
 plt.grid()
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.legend()
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_58_0.png)
+![png](chapter-8_files/chapter-8_59_0.png)
     
 
 
@@ -554,29 +573,30 @@ def pa_ending(x,y,threshold=-5):
 
 
 ```python
-f_intermitent_l_pae=pa_ending(f_time,f_intermitent_l_prime,threshold=-6)
+f_interm_l_pae=pa_ending(f_time,f_interm_l_prime,threshold=-6)
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent Left")
-plt.plot(f_time[0:601],f_intermitent_l,label="Intermitent L")
-plt.plot(f_time[0:601],f_intermitent_l_prime,label="Intermitent L'")
-#plt.plot(f_intermitent_l[:,0],f_intermitent_l_2prime,label="Intermitent L''")
+plt.title("Force: Intermittent Left")
+plt.plot(f_time[0:601],f_interm_l,label="Intermittent L")
+plt.plot(f_time[0:601],f_interm_l_prime,label="Intermittent L'")
 
-plt.scatter(f_intermitent_l_pab[0],f_intermitent_l_pab[1],label="PA beginning")
-plt.scatter(f_intermitent_l_pae[0],f_intermitent_l_pae[1],label="PA ending")
-#plt.xlim(0,20)
-plt.ylim(-20,50)
+plt.scatter(f_interm_l_pab[0],f_interm_l_pab[1],label="Start")
+plt.scatter(f_interm_l_pae[0],f_interm_l_pae[1],label="End")
+plt.xlim(0,20)
+plt.ylim(-8,20)
 plt.grid()
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.legend()
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_61_0.png)
+![png](chapter-8_files/chapter-8_62_0.png)
     
 
 
@@ -605,37 +625,20 @@ def segments_th(x,y,threshold=6):
 
 
 ```python
-segments_l=segments_th(f_time[:601],f_intermitent_l)
-segments_r=segments_th(f_time[:len(f_intermitent_r)],f_intermitent_r)
+segments_l=segments_th(f_time[:601],f_interm_l)
+segments_r=segments_th(f_time[:len(f_interm_r)],f_interm_r)
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent Left")
-plt.plot(f_time[:601],f_intermitent_l,label="Intermitent L")
-plt.scatter(segments_l[0][0],segments_l[0][1],label="AP beginning")
-plt.scatter(segments_l[1][0],segments_l[1][1],label="AP ending")
+plt.title("Force: Intermittent Left")
+plt.plot(f_time[:601],f_interm_l,label="Intermittent L")
+plt.scatter(segments_l[0][0],segments_l[0][1],label="Start")
+plt.scatter(segments_l[1][0],segments_l[1][1],label="End")
 #plt.xlim(0,20)
-plt.grid()
-plt.legend()
-plt.show;
-```
-
-
-    
-![png](chapter-8_files/chapter-8_64_0.png)
-    
-
-
-
-```python
-plt.figure(figsize=(18,6))
-plt.title("Force: Intermitent Right")
-plt.plot(f_time[:len(f_intermitent_r)],f_intermitent_r,label="Intermitent R")
-plt.scatter(segments_r[0][0],segments_r[0][1],label="AP beginning")
-plt.scatter(segments_r[1][0],segments_r[1][1],label="AP ending")
-#plt.xlim(0,20)
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.grid()
 plt.legend()
 plt.show;
@@ -649,10 +652,26 @@ plt.show;
 
 
 ```python
-
+plt.figure(figsize=(18,6))
+plt.title("Force: Intermittent Right")
+plt.plot(f_time[:len(f_interm_r)],f_interm_r,label="Intermittent R")
+plt.scatter(segments_r[0][0],segments_r[0][1],label="Start")
+plt.scatter(segments_r[1][0],segments_r[1][1],label="End")
+#plt.xlim(0,20)
+plt.grid()
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
+plt.legend()
+plt.show;
 ```
 
-## 7.- Segmenting the EMG
+
+    
+![png](chapter-8_files/chapter-8_66_0.png)
+    
+
+
+## Segmenting the EMG
 
 
 ```python
@@ -661,26 +680,28 @@ def find_in(array,x):
         if array[i]>=x:
             if array[i-1]<x:
                 return(i)
-    print("Error: Valor no encontrado")
+    print("Error: Value not found")
     return("Error")
 ```
 
 
 ```python
-Time_a=np.linspace(-1.45,offset_i_l-a_i_l+f_time[len(f_intermitent_l-1)],num=len(intermitent_l))
-Time_b=np.linspace(-0.9,offset_i_r-a_i_r+f_time[len(f_intermitent_r-1)],num=len(intermitent_r))
+Time_a=np.linspace(-1.45,offset_i_l-a_i_l+f_time[len(f_interm_l-1)],num=len(interm_l))
+Time_b=np.linspace(-0.9,offset_i_r-a_i_r+f_time[len(f_interm_r-1)],num=len(interm_r))
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Intermitent: Left")
-plt.plot(Time_a,intermitent_l,label="EMG")
-plt.plot(f_time[:601],max(intermitent_l)*f_intermitent_l/max(f_intermitent_l),label="Force")
-#plt.scatter(segments[0][0],100*segments[0][1],label="PA beginning")
-#plt.scatter(segments[1][0],100*segments[1][1],label="PA ending")
+plt.title("Intermittent: Left")
+plt.plot(Time_a,interm_l,label="EMG")
+plt.plot(f_time[:601],max(interm_l)*f_interm_l/max(f_interm_l),label="Force")
+#plt.scatter(segments[0][0],100*segments[0][1],label="Start")
+#plt.scatter(segments[1][0],100*segments[1][1],label="End")
 plt.xlim(0,10)
-#plt.ylim(-5000,5000)
+plt.ylim(-5000,5000)
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.legend()
 plt.show;
 ```
@@ -694,13 +715,15 @@ plt.show;
 
 ```python
 plt.figure(figsize=(18,6))
-plt.title("Intermitent: Right")
-plt.plot(Time_b,intermitent_r,label="EMG")
-plt.plot(f_time[:len(f_intermitent_r)],max(intermitent_r)*f_intermitent_r/max(f_intermitent_r),label="Force")
-#plt.scatter(segments[0][0],100*segments[0][1],label="PA beginning")
-#plt.scatter(segments[1][0],100*segments[1][1],label="PA ending")
+plt.title("Intermittent: Right")
+plt.plot(Time_b,interm_r,label="EMG")
+plt.plot(f_time[:len(f_interm_r)],max(interm_r)*f_interm_r/max(f_interm_r),label="Force")
+#plt.scatter(segments[0][0],100*segments[0][1],label="Start")
+#plt.scatter(segments[1][0],100*segments[1][1],label="End")
 plt.xlim(0,10)
-#plt.ylim(-5000,5000)
+plt.ylim(-5000,5000)
+plt.xlabel('Time (s)')
+plt.ylabel('Force (N)')
 plt.legend()
 plt.show;
 ```
@@ -711,10 +734,10 @@ plt.show;
     
 
 
-## 8.- Muscle fiber recruitment: Frecuency analysis
+## Muscle fiber recruitment: Frequency analysis
 
-### 8.1) Main frequency comparison
-The first value we are going to look into is the main frequency of each segment. This might give us a clue of the amount of muscle fibers that are getting activated. We expect to find higher frequencies when the force is greater. 
+### Main frequency comparison
+The first value we are going to look into is the main frequency of each segment. This might give us a clue of the amount of muscle fibers that are getting activated. We expect to find higher frequencies when the force is greater, though the correlation is not always perfect. 
 
 
 ```python
@@ -722,7 +745,7 @@ The first value we are going to look into is the main frequency of each segment.
 # and returns the frequency at which a maxima is obtained
 def mainFreq(i,side="l"):
     if side=="l":
-        Pa=intermitent_l[find_in(Time_a,segments_l[0][0][i]):find_in(Time_a,segments_l[1][0][i])]
+        Pa=interm_l[find_in(Time_a,segments_l[0][0][i]):find_in(Time_a,segments_l[1][0][i])]
         #plt.figure(figsize=(18,6))
         #plt.subplot(121)
         #plt.plot(Time_a[find_in(Time_a,segments_l[0][0][i]):find_in(Time_a,segments_l[1][0][i])],Pa)
@@ -730,7 +753,7 @@ def mainFreq(i,side="l"):
         #plt.ylabel("EMG Amplitude (uV)")
         #plt.title("EMG")
     else:
-        Pa=intermitent_r[find_in(Time_b,segments_r[0][0][i]):find_in(Time_b,segments_r[1][0][i])]
+        Pa=interm_r[find_in(Time_b,segments_r[0][0][i]):find_in(Time_b,segments_r[1][0][i])]
         #plt.figure(figsize=(18,6))
         #plt.subplot(121)
         #plt.plot(Time_b[find_in(Time_b,segments_r[0][0][i]):find_in(Time_b,segments_r[1][0][i])],Pa)
@@ -799,9 +822,9 @@ plt.scatter(np.linspace(0,60,num=37)[:17],freq_req_l[:17],label="S1")
 plt.scatter(np.linspace(0,60,num=37)[17:27],freq_req_l[17:27],label="S2")
 plt.scatter(np.linspace(0,60,num=37)[27:],freq_req_l[27:],label="S3")
 plt.legend()
-plt.title('Muscle fiber recruitment: Left')
-plt.ylabel('Main Frequency [Hz]')
-plt.xlabel('Time [sec]')
+plt.title('Analysis: Left')
+plt.ylabel('Main Frequency (Hz)')
+plt.xlabel('Time (s)')
 plt.show;
 ```
 
@@ -818,9 +841,9 @@ plt.scatter(np.linspace(0,60,num=33)[:16],freq_req_r[:16],label="S1")
 plt.scatter(np.linspace(0,60,num=33)[16:25],freq_req_r[16:25],label="S2")
 plt.scatter(np.linspace(0,60,num=33)[25:],freq_req_r[25:],label="S3")
 plt.legend()
-plt.title('Muscle fiber recruitment: Left')
-plt.ylabel('Main Frequency [Hz]')
-plt.xlabel('Time [sec]')
+plt.title('Analysis: Right')
+plt.ylabel('Main Frequency (Hz)')
+plt.xlabel('Time (s)')
 plt.show;
 ```
 
@@ -830,18 +853,18 @@ plt.show;
     
 
 
-From the graphs above we can concude that the most relevant frequency isn't a significative number. No correlation can be found between the force produced and the frequency of the EMG based on this analysis. This might be due to two reasons. Either the measurments don't have enough resolution to properly indentify the muscle fiber recruitment or the shape of the spectrogram can't be accurately described by the main frecuency component. In the first case we would need to repeat the whole experiment once again and get new measurments with a more precise detector. If the second case is true, we should find a new way to clasify the shape of the spectrogram. 
+From the graphs above we can concude that the most relevant frequency isn't a significant number. No strong correlation can be found between the force produced and the frequency of the EMG based on this analysis. This might be due to two reasons. Either the measurements do not have enough resolution to properly indentify the muscle fiber recruitment, or the shape of the spectrogram cannot be accurately described by the main frequency component. In the first case we would need to repeat the experiment again and get new measurements with a more precise detector. If the second case is true, we should find a new way to clasify the shape of the spectrogram. 
 
-### 8.2) Spectrogram
+### Spectrogram
 
 
 ```python
-f_r,t_r,sxx_r = sc.signal.spectrogram(intermitent_r,sr_intermitent_r,nperseg=sr_intermitent_r//2, scaling='spectrum')
+f_r,t_r,sxx_r = sc.signal.spectrogram(interm_r,sr_interm_r,nperseg=sr_interm_r//2, scaling='spectrum')
 ```
 
 
 ```python
-f_l,t_l,sxx_l = sc.signal.spectrogram(intermitent_l,sr_intermitent_l,nperseg=sr_intermitent_l//2, scaling='spectrum')
+f_l,t_l,sxx_l = sc.signal.spectrogram(interm_l,sr_interm_l,nperseg=sr_interm_l//2, scaling='spectrum')
 ```
 
 
@@ -849,17 +872,17 @@ f_l,t_l,sxx_l = sc.signal.spectrogram(intermitent_l,sr_intermitent_l,nperseg=sr_
 f_r = f_r[:401]
 sxx_r = sxx_r[:401]
 
-fig = plt.figure(figsize=(20,10),dpi=50)
+fig = plt.figure(figsize=(30,15),dpi=50)
 ax1 = plt.subplot(211)
 plt.pcolormesh(np.log(sxx_r),cmap='jet')
 plt.xticks([])
-plt.ylabel('Frequency [Hz]')
-plt.title('Spectogram - Rectified EMG')
+plt.ylabel('Frequency (Hz)')
+plt.title('Spectrogram - Rectified EMG')
 
 ax2 = plt.subplot(212)
 plt.plot(np.arange(0,len(intermitent_r))/sr_intermitent_r,intermitent_r,lw=.1)
-plt.ylabel('Voltage ($\mu$V)')
-plt.xlabel('Time [sec]')
+plt.ylabel('Voltage (uncalibrated)')
+plt.xlabel('Time (sec)')
 plt.xlim(t_r[0],t_r[-1])
 
 # adding an independent axis for the colorbar:
@@ -870,15 +893,9 @@ plt.colorbar(label='log($Voltage^2$)',cax=cbar_ax,)
 plt.draw()
 ```
 
-    <>:13: SyntaxWarning: invalid escape sequence '\m'
-    <>:13: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/4177834764.py:13: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_85_1.png)
+![png](chapter-8_files/chapter-8_85_0.png)
     
 
 
@@ -887,17 +904,17 @@ plt.draw()
 f_l = f_l[:401]
 sxx_l = sxx_l[:401]
 
-fig = plt.figure(figsize=(20,10),dpi=50)
+fig = plt.figure(figsize=(30,15),dpi=50)
 ax1 = plt.subplot(211)
 plt.pcolormesh(np.log(sxx_l),cmap='jet')
 plt.xticks([])
-plt.ylabel('Frequency [Hz]')
-plt.title('Spectogram - Rectified EMG')
+plt.ylabel('Frequency (Hz)')
+plt.title('Spectrogram - Rectified EMG')
 
 ax2 = plt.subplot(212)
-plt.plot(np.arange(0,len(intermitent_l))/sr_intermitent_l,intermitent_l,lw=.1)
-plt.ylabel('Voltage ($\mu$V)')
-plt.xlabel('Time [sec]')
+plt.plot(np.arange(0,len(interm_l))/sr_interm_l,interm_l,lw=.1)
+plt.ylabel('Voltage (uncalibrated')
+plt.xlabel('Time (s)')
 plt.xlim(t_l[0],t_l[-1])
 
 # adding an independent axis for the colorbar:
@@ -908,29 +925,23 @@ plt.colorbar(label='log($Voltage^2$)',cax=cbar_ax,)
 plt.draw()
 ```
 
-    <>:13: SyntaxWarning: invalid escape sequence '\m'
-    <>:13: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/3415151233.py:13: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_86_1.png)
+![png](chapter-8_files/chapter-8_86_0.png)
     
 
 
-From the spectrogram we can see that the main frequency isn't as important as the distribution of the spectrogram. In pulses of greater force, the spectogram of the signal apears to be wider (more high frequency components). From this observations we see that the signal could be described by the mean root squared of the values in the corresponding segment. 
+From the spectrogram we can see that the main frequency isn't as important as the distribution of the spectrogram. In pulses of greater force, the spectogram of the signal apears to be wider (more high frequency components). From these observations we see that the signal could be described by the mean root squared of the values in the corresponding segment. 
 
-### 8.3) Average frequency in spectrogram of each segment
+### Average frequency in spectrogram of each segment
 
 
 ```python
 def rms_freq(i,side="l"):
     if side=="l":
-        Pa=intermitent_l[find_in(Time_a,segments_l[0][0][i]):find_in(Time_a,segments_l[1][0][i])]
+        Pa=interm_l[find_in(Time_a,segments_l[0][0][i]):find_in(Time_a,segments_l[1][0][i])]
     else:
-        Pa=intermitent_r[find_in(Time_b,segments_r[0][0][i]):find_in(Time_b,segments_r[1][0][i])]
+        Pa=interm_r[find_in(Time_b,segments_r[0][0][i]):find_in(Time_b,segments_r[1][0][i])]
     
     #The fft is calculated
     X = fft(Pa)
@@ -938,7 +949,7 @@ def rms_freq(i,side="l"):
     n = np.arange(N)
     freq = n/(Time_a[-1]-Time_a[0])
 
-    # Get the one-sided specturm
+    # Get the one-sided spectrum
     n_oneside = N//2
     # get the one side frequency
     f_oneside = freq[:n_oneside]
@@ -974,9 +985,9 @@ plt.scatter(np.linspace(0,60,num=37)[:17],freq_rms_l[:17],label="S1")
 plt.scatter(np.linspace(0,60,num=37)[17:27],freq_rms_l[17:27],label="S2")
 plt.scatter(np.linspace(0,60,num=37)[27:],freq_rms_l[27:],label="S3")
 plt.legend()
-plt.title('Muscle fiber recruitment: Left')
-plt.ylabel('Average Frequency [Hz]')
-plt.xlabel('Time [sec]')
+plt.title('Analysis: Left')
+plt.ylabel('Average Frequency (Hz)')
+plt.xlabel('Time (s)')
 plt.show;
 ```
 
@@ -1000,9 +1011,9 @@ plt.scatter(np.linspace(0,60,num=33)[:16],freq_rms_r[:16],label="S1")
 plt.scatter(np.linspace(0,60,num=33)[16:25],freq_rms_r[16:25],label="S2")
 plt.scatter(np.linspace(0,60,num=33)[25:],freq_rms_r[25:],label="S3")
 plt.legend()
-plt.title('Muscle fiber recruitment: right')
-plt.ylabel('Average Frequency [Hz]')
-plt.xlabel('Time [sec]')
+plt.title('Analysis: right')
+plt.ylabel('Average Frequency (Hz)')
+plt.xlabel('Time (s)')
 plt.show;
 ```
 
@@ -1012,19 +1023,19 @@ plt.show;
     
 
 
-## 9.- Average frequency vs force produced
+## Average frequency vs force produced
 
 
 ```python
-# For every segment of the force array, we append the maximum value to the array f_intermitent_l_max
-f_intermitent_l_max=[]
+# For every segment of the force array, we append the maximum value to the array f_interm_l_max
+f_interm_l_max=[]
 for i in range(0,len(segments_l[0][0])):
-    f_intermitent_l_max.append(max(f_intermitent_l[segments_l[0][2][i]:segments_l[1][2][i]]))
+    f_interm_l_max.append(max(f_interm_l[segments_l[0][2][i]:segments_l[1][2][i]]))
 ```
 
 
 ```python
-len(f_intermitent_l_max)
+len(f_interm_l_max)
 ```
 
 
@@ -1036,22 +1047,22 @@ len(f_intermitent_l_max)
 
 
 ```python
-# For every segment of the force array, we append the maximum value to the array f_intermitent_r_max
-f_intermitent_r_max=[]
+# For every segment of the force array, we append the maximum value to the array f_interm_r_max
+f_interm_r_max=[]
 for i in range(0,len(segments_r[0][0])):
-    f_intermitent_r_max.append(max(f_intermitent_r[segments_r[0][2][i]:segments_r[1][2][i]]))
+    f_interm_r_max.append(max(f_interm_r[segments_r[0][2][i]:segments_r[1][2][i]]))
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.scatter(f_intermitent_l_max[:17],freq_rms_l[:17],label="S1")
-plt.scatter(f_intermitent_l_max[17:27],freq_rms_l[17:27],label="S2")
-plt.scatter(f_intermitent_l_max[27:],freq_rms_l[27:],label="S3")
+plt.scatter(f_interm_l_max[:17],freq_rms_l[:17],label="S1")
+plt.scatter(f_interm_l_max[17:27],freq_rms_l[17:27],label="S2")
+plt.scatter(f_interm_l_max[27:],freq_rms_l[27:],label="S3")
 plt.legend()
-plt.title('Muscle fiber recruitment: Left')
-plt.ylabel('Average Frequency [Hz]')
-plt.xlabel("Force max (unknown units)")
+plt.title('Analysis: Left')
+plt.ylabel('Average Frequency (Hz)')
+plt.xlabel("Force max (N)")
 plt.show;
 ```
 
@@ -1064,13 +1075,13 @@ plt.show;
 
 ```python
 plt.figure(figsize=(18,6))
-plt.scatter(f_intermitent_r_max[:16],freq_rms_r[:16],label="S1")
-plt.scatter(f_intermitent_r_max[16:25],freq_rms_r[16:25],label="S2")
-plt.scatter(f_intermitent_r_max[25:],freq_rms_r[25:],label="S3")
+plt.scatter(f_interm_r_max[:16],freq_rms_r[:16],label="S1")
+plt.scatter(f_interm_r_max[16:25],freq_rms_r[16:25],label="S2")
+plt.scatter(f_interm_r_max[25:],freq_rms_r[25:],label="S3")
 plt.legend()
-plt.title('Muscle fiber recruitment: Right')
-plt.ylabel('Average Frequency [Hz]')
-plt.xlabel("Force max (unknown units)")
+plt.title('Analysis: Right')
+plt.ylabel('Average Frequency (Hz)')
+plt.xlabel("Force max (N)")
 plt.show;
 ```
 
@@ -1080,14 +1091,14 @@ plt.show;
     
 
 
-## 10.- Rectification and envelope
+## Rectification and envelope
 
-### 10.1) Envelope method 1: Low-pass filter
+### Envelope method 1: Low-pass filter
 
 
 ```python
-intermitent_r_abs=abs(intermitent_r)
-intermitent_l_abs=abs(intermitent_l)
+interm_r_abs=abs(interm_r)
+interm_l_abs=abs(interm_l)
 ```
 
 
@@ -1108,61 +1119,47 @@ def envelope(x,sr,lf=15):
 
 
 ```python
-intermitent_l_env=envelope(intermitent_l_abs,sr_intermitent_l)
-intermitent_r_env=envelope(intermitent_r_abs,sr_intermitent_r)
+interm_l_env=envelope(interm_l_abs,sr_interm_l)
+interm_r_env=envelope(interm_r_abs,sr_interm_r)
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.plot(Time_a,intermitent_l_abs,label="Rectified signal")
-#plt.plot(Time_a,intermitent_l,label="EMG")
-plt.plot(Time_a,intermitent_l_env,label="Envelope")
+plt.plot(Time_a,interm_l_abs,label="Rectified signal")
+plt.plot(Time_a,interm_l_env,label="Envelope")
 plt.legend()
 plt.title("Envelope: Low-pass filter (Left)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show()
 ```
 
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/3162514347.py:8: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_105_1.png)
+![png](chapter-8_files/chapter-8_105_0.png)
     
 
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.plot(Time_b,intermitent_r_abs,label="Rectified signal")
-#plt.plot(Time_b,intermitent_r,label="EMG")
-plt.plot(Time_b,intermitent_r_env,label="Envelope")
+plt.plot(Time_b,interm_r_abs,label="Rectified signal")
+plt.plot(Time_b,interm_r_env,label="Envelope")
 plt.legend()
 plt.title("Envelope: Low-pass filter (right)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show()
 ```
 
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/1855869911.py:8: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_106_1.png)
+![png](chapter-8_files/chapter-8_106_0.png)
     
 
 
-### 10.2) Envelope method 2: Local max in a time window
+### Envelope method 2: Local max in a time window
 
 
 ```python
@@ -1181,34 +1178,27 @@ def envelope_2(x,y,s=6000):
 
 ```python
 #The envelope is calculated for each hand
-intermitent_l_env2,time_l_env=envelope_2(intermitent_l_abs,Time_a)
-intermitent_r_env2,time_r_env=envelope_2(intermitent_r_abs,Time_b)
+interm_l_env2,time_l_env=envelope_2(interm_l_abs,Time_a)
+interm_r_env2,time_r_env=envelope_2(interm_r_abs,Time_b)
 ```
 
 
 ```python
 #Plot left hand envelope and EMG
 plt.figure(figsize=(18,6))
-plt.plot(time_l_env,intermitent_l_env2,label="Envelope")
-#plt.plot(Time_a,intermitent_l_abs,label="Rectified signal")
-plt.plot(Time_a,intermitent_l,label="EMG")
+plt.plot(time_l_env,interm_l_env2,label="Envelope")
+plt.plot(Time_a,interm_l,label="EMG")
 plt.legend()
 #plt.xlim(0,10)
 plt.title("Envelope: Local maxima (left)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show()
 ```
 
-    <>:10: SyntaxWarning: invalid escape sequence '\m'
-    <>:10: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/1545707681.py:10: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_110_1.png)
+![png](chapter-8_files/chapter-8_110_0.png)
     
 
 
@@ -1216,35 +1206,22 @@ plt.show()
 ```python
 #Plot right hand envelope and EMG
 plt.figure(figsize=(18,6))
-plt.plot(time_r_env,intermitent_r_env2,label="Envelope")
-#plt.plot(Time_b,intermitent_r_abs,label="Rectified signal")
-plt.plot(Time_b,intermitent_r,label="EMG")
+plt.plot(time_r_env,interm_r_env2,label="Envelope")
+plt.plot(Time_b,interm_r,label="EMG")
 plt.legend()
 plt.title("Envelope: Local maxima (right)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show()
 ```
 
-    <>:9: SyntaxWarning: invalid escape sequence '\m'
-    <>:9: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/228831361.py:9: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_111_1.png)
+![png](chapter-8_files/chapter-8_111_0.png)
     
 
 
-### 10.3) Envelope method 3: Root mean squared in a time window
-
-The root mean squared method consists a squared root of the mean squared values in a moving time window:
-
-$ \sqrt{\frac{\sum_{i=a}^{b} x_i^2}{(b-a)}}$
-
-In the example above the time window starts in x_a and it ends in x_b. The time window contains b-a values.
+### Envelope method 3: Root mean squared in a time window
 
 
 ```python
@@ -1258,34 +1235,27 @@ Breaking it down, the np.power(a, 2) part makes a new array with the same dimens
 
 
 ```python
-intermitent_l_rms=envelope_rms(intermitent_l_abs)
-intermitent_r_rms=envelope_rms(intermitent_r_abs)
+interm_l_rms=envelope_rms(interm_l_abs)
+interm_r_rms=envelope_rms(interm_r_abs)
 ```
 
 
 ```python
 #Plot left hand envelope and EMG
 plt.figure(figsize=(18,6))
-#plt.plot(Time_a,intermitent_l,label="EMG")
-plt.plot(Time_a,intermitent_l_abs,label="Rectified signal")
-plt.plot(Time_a,3*intermitent_l_rms,label="Envelope")
+plt.plot(Time_a,interm_l_abs,label="Rectified signal")
+plt.plot(Time_a,3*interm_l_rms,label="Envelope")
 plt.legend()
 #plt.xlim(0,10)
 plt.title("Envelope: Local maxima (left)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show()
 ```
 
-    <>:10: SyntaxWarning: invalid escape sequence '\m'
-    <>:10: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/944359641.py:10: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_119_1.png)
+![png](chapter-8_files/chapter-8_116_0.png)
     
 
 
@@ -1293,181 +1263,146 @@ plt.show()
 ```python
 #Plot left hand envelope and EMG
 plt.figure(figsize=(18,6))
-#plt.plot(Time_a,intermitent_l,label="EMG")
-plt.plot(Time_b,intermitent_r_abs,label="Rectified signal")
-plt.plot(Time_b,3*intermitent_r_rms,label="Envelope")
+plt.plot(Time_b,interm_r_abs,label="Rectified signal")
+plt.plot(Time_b,3*interm_r_rms,label="Envelope")
 plt.legend()
 #plt.xlim(0,10)
 plt.title("Envelope: Local maxima (left)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show()
 ```
 
-    <>:10: SyntaxWarning: invalid escape sequence '\m'
-    <>:10: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/245550948.py:10: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_120_1.png)
+![png](chapter-8_files/chapter-8_117_0.png)
     
 
 
-## 11.- Enveloped EMG signal vs Force signal
+## Enveloped EMG signal vs Force signal
 
 
 ```python
 # Plot enveloped EMG and the Force signal
 plt.figure(figsize=(18,6))
-plt.plot(Time_a,5*intermitent_l_rms,label="Envelope")
-plt.plot(f_time[:len(f_intermitent_l)],max(intermitent_l)*f_intermitent_l/max(f_intermitent_l),label="Force(scaled)")
-#plt.scatter(segments_l[0][0],segments_l[0][1],label="AP beginning")
-#plt.scatter(segments_l[1][0],segments_l[1][1],label="AP ending")
+plt.plot(Time_a,5*interm_l_rms,label="Envelope")
+plt.plot(f_time[:len(f_interm_l)],max(interm_l)*f_interm_l/max(f_interm_l),label="Force(scaled)")
 plt.legend()
 plt.title("Envelope vs Force (left)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 #plt.xlim(0,10)
 plt.show()
 ```
 
-    <>:10: SyntaxWarning: invalid escape sequence '\m'
-    <>:10: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/3970553941.py:10: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_122_1.png)
+![png](chapter-8_files/chapter-8_119_0.png)
     
 
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.plot(Time_b,5*intermitent_r_rms,label="Envelope")
-plt.plot(f_time[:len(f_intermitent_r)],max(intermitent_r_env2)*f_intermitent_r/max(f_intermitent_r),label="Force")
+plt.plot(Time_b,5*interm_r_rms,label="Envelope")
+plt.plot(f_time[:len(f_interm_r)],max(interm_r_env2)*f_interm_r/max(f_interm_r),label="Force")
 plt.legend()
 #plt.xlim(50,60)
 plt.title("Envelope vs Force (right)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show()
 ```
 
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/4245069051.py:8: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_123_1.png)
+![png](chapter-8_files/chapter-8_120_0.png)
     
 
 
-## 12.- Base line compensation
+## Base line compensation
 
 
 ```python
-baseLine_l=min(intermitent_l_rms[6000:len(intermitent_l_rms)-6000])
+baseLine_l=min(interm_l_rms[6000:len(interm_l_rms)-6000])
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.plot(Time_a,5*(intermitent_l_rms-baseLine_l),label="Envelope")
-plt.plot(f_time[:len(f_intermitent_l)],max(intermitent_l_env2-baseLine_l)*f_intermitent_l/max(f_intermitent_l),label="Force")
+plt.plot(Time_a,5*(interm_l_rms-baseLine_l),label="Envelope")
+plt.plot(f_time[:len(f_interm_l)],max(interm_l_env2-baseLine_l)*f_interm_l/max(f_interm_l),label="Force")
 plt.legend()
 #plt.xlim(20,30)
 plt.title("Envelope vs Force with baseline compensation (left)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show()
 ```
 
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/3694424088.py:8: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_126_1.png)
+![png](chapter-8_files/chapter-8_123_0.png)
     
 
 
 
 ```python
-baseLine_r=min(intermitent_r_rms[6000:len(intermitent_r_rms)-6000])
+baseLine_r=min(interm_r_rms[6000:len(interm_r_rms)-6000])
 ```
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.plot(Time_b,5*(intermitent_r_rms-baseLine_r),label="Envelope")
-plt.plot(f_time[:len(f_intermitent_r)],max(intermitent_r_env2-baseLine_r)*f_intermitent_r/max(f_intermitent_r),label="Force")
+plt.plot(Time_b,5*(interm_r_rms-baseLine_r),label="Envelope")
+plt.plot(f_time[:len(f_interm_r)],max(interm_r_env2-baseLine_r)*f_interm_r/max(f_interm_r),label="Force")
 plt.legend()
 #plt.xlim(20,30)
 plt.title("Envelope vs Force with baseline compensation (right)")
 plt.xlabel("Time (s)")
-plt.ylabel('Voltage ($\mu$V)')
+plt.ylabel('Voltage (uncalibrated)')
 plt.show()
 ```
 
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    <>:8: SyntaxWarning: invalid escape sequence '\m'
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/1274183397.py:8: SyntaxWarning: invalid escape sequence '\m'
-      plt.ylabel('Voltage ($\mu$V)')
-
-
 
     
-![png](chapter-8_files/chapter-8_128_1.png)
+![png](chapter-8_files/chapter-8_125_0.png)
     
 
 
-Notice that with the MSR method we have borderline effects in the left hand, as well as deformations in the resting periods, which amplifies noise. So, we will use the envelope obtained with the method 2: local maxima. The method 2 doesn't affect the borders of each impulse and helps to keep the amplitude of the action potential constant. 
+Notice that with the MSR method we have borderline effects in the left hand, as well as deformations in the resting periods, which amplifies noise. So, we will use the envelope obtained with method 2: local maxima. Method 2 does not affect the borders of each impulse and helps to keep the amplitude of the signal constant. Despite the fact that the MSR method proved to be less useful in this case, it is very useful when enveloping EEG signals or fatigue EMG signals. It is important to know the limitations of each technique we use, as well as their pros and cons. 
 
-Despite the fact that the MSR method proved to be useless in this case, it is very usefull when enveloping EEG signal or fatigue EMG signals. It is important to know the limitations of each technique we use, as well as their pros and cons. 
-
-## 13.- Impulse amplitude: EMG vs Force
+## Impulse amplitude: EMG vs Force
 
 
 ```python
 # Define a new array of corrected envelopes
-intermitent_l_c=intermitent_l_env2-baseLine_l
-f_time_l=f_time[:len(f_intermitent_l)]
-intermitent_r_c=intermitent_r_env2-baseLine_r
-f_time_r=f_time[:len(f_intermitent_r)]
+interm_l_c=interm_l_env2-baseLine_l
+f_time_l=f_time[:len(f_interm_l)]
+interm_r_c=interm_r_env2-baseLine_r
+f_time_r=f_time[:len(f_interm_r)]
 ```
 
 
 ```python
 # Segmentation of the EMG envelope by thresholds
-segments_l_c=segments_th(time_l_env,intermitent_l_c,threshold=500)
-segments_r_c=segments_th(time_r_env,intermitent_r_c,threshold=500)
+segments_l_c=segments_th(time_l_env,interm_l_c,threshold=500)
+segments_r_c=segments_th(time_r_env,interm_r_c,threshold=500)
 ```
 
 
 ```python
-# For every segment of the EMG envelope, we append the maximum value to the array intermitent_l_max
+# For every segment of the EMG envelope, we append the maximum value to the array interm_l_max
 j=0
 start=False
-intermitent_l_max=[]
+interm_l_max=[]
 for i in range(0,len(time_l_env)):
     if j==len(segments_l[1][0]):
         break
     if start==True:
         if time_l_env[i]>segments_l[1][0][j]:
             #print(index,i)
-            intermitent_l_max.append(max(intermitent_l_c[index:i]))
+            interm_l_max.append(max(interm_l_c[index:i]))
             start=False
             j+=1
     if start==False:
@@ -1482,14 +1417,14 @@ for i in range(0,len(time_l_env)):
 # For every segment of the EMG envelope, we append the maximum value to the array intermitent_r_max
 j=0
 start=False
-intermitent_r_max=[]
+interm_r_max=[]
 for i in range(0,len(time_r_env)):
     if j==len(segments_l[1][0]):
         break
     if start==True:
         if time_r_env[i]>segments_r[1][0][j]:
             #print(index,i)
-            intermitent_r_max.append(max(intermitent_r_c[index:i]))
+            interm_r_max.append(max(interm_r_c[index:i]))
             start=False
             j+=1
     if start==False:
@@ -1502,44 +1437,44 @@ for i in range(0,len(time_r_env)):
 
 ```python
 plt.figure(figsize=(18,6))
-plt.scatter(intermitent_l_max[:17],f_intermitent_l_max[:17],label="S1")
-plt.scatter(intermitent_l_max[17:27],f_intermitent_l_max[17:27],label="S2")
-plt.scatter(intermitent_l_max[27:],f_intermitent_l_max[27:],label="S3")
+plt.scatter(interm_l_max[:17],f_interm_l_max[:17],label="S1")
+plt.scatter(interm_l_max[17:27],f_interm_l_max[17:27],label="S2")
+plt.scatter(interm_l_max[27:],f_interm_l_max[27:],label="S3")
 plt.legend()
 plt.title("Impulse amplitude: EMG vs Force (left)")
-plt.xlabel("EMG envelope max ($/mu$V)")
-plt.ylabel("Force max (unknown units)")
+plt.xlabel("EMG envelope max")
+plt.ylabel("Force max (N)")
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_135_0.png)
+![png](chapter-8_files/chapter-8_132_0.png)
     
 
 
 
 ```python
 plt.figure(figsize=(18,6))
-plt.scatter(intermitent_r_max[:16],f_intermitent_r_max[:16],label="S1")
-plt.scatter(intermitent_r_max[16:25],f_intermitent_r_max[16:25],label="S2")
-plt.scatter(intermitent_r_max[25:],f_intermitent_r_max[25:],label="S3")
+plt.scatter(interm_r_max[:16],f_interm_r_max[:16],label="S1")
+plt.scatter(interm_r_max[16:25],f_interm_r_max[16:25],label="S2")
+plt.scatter(interm_r_max[25:],f_interm_r_max[25:],label="S3")
 plt.legend()
 plt.title("Impulse amplitude: EMG vs Force (right)")
-plt.xlabel("EMG envelope max ($/mu$V)")
-plt.ylabel("Force max (unknown units)")
+plt.xlabel("EMG envelope max")
+plt.ylabel("Force max (N)")
 plt.show;
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_136_0.png)
+![png](chapter-8_files/chapter-8_133_0.png)
     
 
 
-## 14.- Curve fitting
-As it can be seen in the previous graphs, the force produced has a logarithmic(ish) response to the amplitude of the action potential in the muscles that produced it. So now we will try to fit a logarithmic function to the curve.
+## Curve fitting
+As can be seen in the previous graphs, the force produced has a logarithmic(ish) response to the amplitude of the signals in the muscles that produced it. So, now we will try to fit a logarithmic function to the curve.
 
 
 ```python
@@ -1559,23 +1494,23 @@ initialParameters = np.array([1.0, -500.0, -300.0])
 
 ```python
 # curve fit the test data
-fittedParameters_l, pcov_l = curve_fit(logarithmic, intermitent_l_max, f_intermitent_l_max, initialParameters)
+fittedParameters_l, pcov_l = curve_fit(logarithmic, interm_l_max, f_interm_l_max, initialParameters)
 ```
 
-    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_5973/1045232656.py:3: RuntimeWarning: invalid value encountered in log
+    /var/folders/n6/xcj3j4lx6lb8r4wj_86v5cnr0000gn/T/ipykernel_56516/1045232656.py:3: RuntimeWarning: invalid value encountered in log
       return a*np.log(x + b)+c
 
 
 
 ```python
-modelPredictions_l = logarithmic(intermitent_l_max, *fittedParameters_l) 
+modelPredictions_l = logarithmic(interm_l_max, *fittedParameters_l) 
 
-absError_l = modelPredictions_l - f_intermitent_l_max
+absError_l = modelPredictions_l - f_interm_l_max
 
 SE_l = np.square(absError_l) # squared errors
 MSE_l = np.mean(SE_l) # mean squared errors
 RMSE_l = np.sqrt(MSE_l) # Root Mean Squared Error, RMSE
-Rsquared_l = 1.0 - (np.var(absError_l) / np.var(f_intermitent_l_max))
+Rsquared_l = 1.0 - (np.var(absError_l) / np.var(f_interm_l_max))
 
 print('Parameters:', fittedParameters_l)
 print('RMSE:', RMSE_l)
@@ -1607,7 +1542,7 @@ def bubblesort(elements):
 
 
 ```python
-PA_fit_l=np.array([intermitent_l_max,modelPredictions_l])
+PA_fit_l=np.array([interm_l_max,modelPredictions_l])
 ```
 
 
@@ -1618,33 +1553,36 @@ PA_fit_l=bubblesort(PA_fit_l)
 
 ```python
 plt.figure(figsize=(18,6))
-plt.scatter(intermitent_l_max[:17],f_intermitent_l_max[:17],label="S1")
-plt.scatter(intermitent_l_max[17:27],f_intermitent_l_max[17:27],label="S2")
-plt.scatter(intermitent_l_max[27:],f_intermitent_l_max[27:],label="S3")
+plt.scatter(interm_l_max[:17],f_interm_l_max[:17],label="S1")
+plt.scatter(interm_l_max[17:27],f_interm_l_max[17:27],label="S2")
+plt.scatter(interm_l_max[27:],f_interm_l_max[27:],label="S3")
 plt.plot(PA_fit_l[0],PA_fit_l[1],label="Log fit")
 plt.legend()
-plt.title("Impulse amplitude: EMG vs Force (left)")
-plt.xlabel("EMG envelope max ($/mu$V)")
-plt.ylabel("Force max (unknown units)")
+plt.title("EMG vs Force (left)")
+plt.xlabel("EMG envelope max")
+plt.ylabel("Force max (N)")
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_146_0.png)
+![png](chapter-8_files/chapter-8_143_0.png)
     
 
 
 
 ```python
-modelPredictions_r = logarithmic(intermitent_r_max, *fittedParameters_r) 
+# curve fit the test data
+fittedParameters_r, pcov_r = curve_fit(logarithmic, interm_r_max, f_interm_r_max, initialParameters)
 
-absError_r = modelPredictions_r - f_intermitent_r_max
+modelPredictions_r = logarithmic(interm_r_max, *fittedParameters_r) 
+
+absError_r = modelPredictions_r - f_interm_r_max
 
 SE_r = np.square(absError_r) # squared errors
 MSE_r = np.mean(SE_r) # mean squared errors
 RMSE_r = np.sqrt(MSE_r) # Root Mean Squared Error, RMSE
-Rsquared_r = 1.0 - (np.var(absError_r) / np.var(f_intermitent_r_max))
+Rsquared_r = 1.0 - (np.var(absError_r) / np.var(f_interm_r_max))
 
 print('Parameters:', fittedParameters_r)
 print('RMSE:', RMSE_r)
@@ -1658,7 +1596,7 @@ print('R-squared:', Rsquared_r)
 
 
 ```python
-PA_fit_r=np.array([intermitent_r_max,modelPredictions_r])
+PA_fit_r=np.array([interm_r_max,modelPredictions_r])
 ```
 
 
@@ -1669,19 +1607,19 @@ PA_fit_r=bubblesort(PA_fit_r)
 
 ```python
 plt.figure(figsize=(18,6))
-plt.scatter(intermitent_r_max[:17],f_intermitent_r_max[:17],label="S1")
-plt.scatter(intermitent_r_max[17:27],f_intermitent_r_max[17:27],label="S2")
-plt.scatter(intermitent_r_max[27:],f_intermitent_r_max[27:],label="S3")
+plt.scatter(interm_r_max[:17],f_interm_r_max[:17],label="S1")
+plt.scatter(interm_r_max[17:27],f_interm_r_max[17:27],label="S2")
+plt.scatter(interm_r_max[27:],f_interm_r_max[27:],label="S3")
 plt.plot(PA_fit_r[0],PA_fit_r[1],label="Log fit")
 plt.legend()
-plt.title("Impulse amplitude: EMG vs Force (right)")
-plt.xlabel("EMG envelope max ($/mu$V)")
-plt.ylabel("Force max (unknown units)")
+plt.title("EMG vs Force (right)")
+plt.xlabel("EMG envelope max")
+plt.ylabel("Force max (N)")
 plt.show;
 ```
 
 
     
-![png](chapter-8_files/chapter-8_150_0.png)
+![png](chapter-8_files/chapter-8_147_0.png)
     
 
