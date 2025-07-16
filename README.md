@@ -2,8 +2,8 @@
 # Open-source course in muscle physiology & EMG
 
 ### Erin C. McKiernan<sup>1,2</sup>
-sup>1 Departamento de Física, Facultad de Ciencias, Universidad Nacional Autónoma de México</sup><br/>
-sup>2 Open Research Community Accelerator (ORCA) </sup><br/>
+<sup>1 Departamento de Física, Facultad de Ciencias, Universidad Nacional Autónoma de México</sup><br/>
+<sup>2 Open Research Community Accelerator (ORCA) </sup><br/>
 
 
 ## Overview
